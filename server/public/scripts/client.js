@@ -1,72 +1,103 @@
-console.log('Loading client.js');
+class Employee {
+  constructor(firstName, lastName, employeeId, title, annualSalary) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.employeeId = employeeId;
+    this.title = title;
+    this.annualSalary = annualSalary;
+    this.monthlySalary = annualSalary / 12;
+  } // end constructor
+} // end Employee class
 
-let employeeArray = [];
-let totalAnnualSalary = 0;
+const atticus = new Employee('Atticus', 'Roberts', 3456, 'Barista', 23000);
+const jem = new Employee('Jem', 'Johnson', 2236, 'Janitor', 40000);
+const scout = new Employee('Scout', 'Anderson', 5996, 'Accountant', 59000);
+const robert = new Employee('Robert', 'Davis', 1111, 'Software Developer', 64000);
+const mayella = new Employee('Mayella', 'Jones', 9874, 'HR', 51000);
 
-$(document).ready(onReady);
+const employees = [atticus, jem, scout, robert, mayella];
 
-function onReady() {
-    console.log('jQuery has been loaded!');
-    $('#addEmployee').on('click', addEmployeeClick);
-    // any time #employeeTableBody is clicked
-    // check to see (more specifically) if the descendant has class .deleteEmployee
-    // if it does, run the function with the .deleteEmployee element as $(this)
-    $('#employeeTableBody').on('click', '.deleteEmployee', deleteEmployeeClick);
-};
+$(readyNow);
 
-function addEmployeeClick() {
-    console.log('I have been clicked!');
-    let newEmployee = {
-        firstName: $('#firstName').val(),
-        lastName: $('#lastName').val(),
-        employeeId: $('#employeeId').val(),
-        title: $('#title').val(),
-        annualSalary: $('#annualSalary').val(),
+function addEmployee() {
+  if ($('#firstNameIn').val() === '' || $('#lastNameIn').val() === '' || $('#employeeIdIn').val() === '' || $('#titleIn').val() === '' || $('#annualSalaryIn').val() === '') {
+    alert("All fields mandatory.");
+  } else if (!idIsValid()) {
+    alert("Please enter a unique 4-digit employee ID.");
+  } else {
+    const newEmployee = new Employee(
+      $('#firstNameIn').val(),
+      $('#lastNameIn').val(),
+      Number($('#employeeIdIn').val()),
+      $('#titleIn').val(),
+      Number($('#annualSalaryIn').val())
+    );
+    $('#firstNameIn').val('');
+    $('#lastNameIn').val('');
+    $('#employeeIdIn').val('');
+    $('#titleIn').val('');
+    $('#annualSalaryIn').val('');
+    employees.push(newEmployee);
+    displayEmployees();
+    updateBudget();
+  }
+} // end addEmployee
+
+function currencyFormat(num) {
+  return '$' + num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+} // end currencyFormat
+
+function deleteEmployee() {
+  let employeeId = $(this).closest('tr').find("td.id").text();
+  for (let i = 0; i < employees.length; i++) {
+    if (employeeId == employees[i].employeeId) {
+      employees.splice(i, 1);
     }
-    employeeArray.push(newEmployee);
-    console.log(employeeArray);
-    updateTable();
-}
+  }
+  displayEmployees();
+  updateBudget();
+} // end deleteEmployees
 
-function deleteEmployeeClick() {
-    console.log('deleting employee!');
-    let elementId = $(this).attr('id'); // attr is value of any attribute on element
-    console.log('elementId', elementId);
-    for (let i = 0; i < employeeArray.length; i++) {
-        const employee = employeeArray[i];
-        if (employee.employeeId == elementId) {
-            employeeArray.splice(i, 1);
-        }
-    }
-    updateTable();
-}
+function displayEmployees() {
+  $('tbody').empty();
+  for (const employee of employees) {
+    $('tbody').append(`
+      <tr>
+        <td>${employee.firstName}</td>
+        <td>${employee.lastName}</td>
+        <td class="id">${employee.employeeId}</td>
+        <td>${employee.title}</td>
+        <td>${currencyFormat(employee.annualSalary)}</td>,
+        <td><a class="btn deleteEmployeeButton"><i class="fas fa-trash-alt"></i></a></td>
+      </tr>
+    `);
+  }
+} // end displayEmployees
 
-function updateTable() {
-    totalAnnualSalary = 0;
-    $('#employeeTableBody').empty();
-    for (let i = 0; i < employeeArray.length; i++) {
-        const employee = employeeArray[i];
-        $('#employeeTableBody').append(`
-            <tr>
-                <td>${employee.firstName}</td>
-                <td>${employee.lastName}</td>
-                <td>${employee.employeeId}</td>
-                <td>${employee.title}</td>
-                <td>${employee.annualSalary}</td>
-                <td><button class="deleteEmployee" id="${employee.employeeId}">Delete</button></td>
-            </tr>
-        `);
+function idIsValid() {
+  for (const employee of employees) {
+    if ($('#employeeIdIn').val() == employee.employeeId || $('#employeeIdIn').val().length != 4) {
+      return false;
     }
-    for (let i = 0; i < employeeArray.length; i++) {
-        const employee = employeeArray[i];
-        totalAnnualSalary += Number(employee.annualSalary);
-    }
-    $('#monthlySalary').text(totalAnnualSalary / 12);
+  }
+  return true;
+} // end idIsValid
 
-    if(totalAnnualSalary/12 > 20000) {
-        // turn background red
-        $('#monthlySalary').css('background-color', 'red');
-    } else {
-        $('#monthlySalary').css('background-color', 'transparent');
-    }
-}
+function readyNow() {
+  $('#addEmployeeButton').on('click', addEmployee);
+  $('tbody').on('click', '.deleteEmployeeButton', deleteEmployee);
+  displayEmployees();
+  updateBudget();
+} // end readyNow
+
+function updateBudget() {
+  let totalCost = 0;
+  for (const employee of employees) {
+    totalCost += employee.monthlySalary;
+  }
+  $('#budgetDiv').empty();
+  $('#budgetDiv').append(`<h3 id="budgetDisplay" class="text-right">Monthly Cost: ${currencyFormat(totalCost)}</h3>`);
+  if (totalCost > 20000) {
+    $('#budgetDisplay').addClass('negative');
+  }
+} // end updateBudget

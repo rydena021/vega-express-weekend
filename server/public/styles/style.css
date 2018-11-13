@@ -1,0 +1,12 @@
+body {
+  font-family: 'Cabin', sans-serif;
+}
+
+thead {
+  background-color: #e9ecef;
+  color: #212529;
+}
+
+.negative {
+  color: red;
+}

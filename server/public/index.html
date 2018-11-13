@@ -1,39 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Vega Weekend 1 Live Solve</title>
-    <link rel="stylesheet" href="styles/style.css">
-    <script src="vendors/jquery.js"></script>
-    <script src="scripts/client.js"></script>
-</head>
-<body>
-    <h1>Vega Weekend 1 Live Solve</h1>
-    <h2>Add Employees</h2>
-    <input type="text" id="firstName" placeholder="First Name" />
-    <input type="text" id="lastName" placeholder="Last Name" />
-    <input type="text" id="employeeId" placeholder="Employee ID" />
-    <input type="text" id="title" placeholder="Title" />
-    <input type="number" id="annualSalary" placeholder="Annual Salary" />
-    <button type="button" id="addEmployee">Submit</button>
 
-    <h2>Employees</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Employee ID</th>
-                <th>Title</th>
-                <th>Annual Salary</th>
-            </tr>
-        </thead>
-        <tbody id="employeeTableBody">
-        </tbody>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Vega Weekend 1 Live Solve</title>
+  <link href="https://fonts.googleapis.com/css?family=Cabin" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="vendors/bootstrap.css">
+  <link rel="stylesheet" href="styles/style.css">
+  <script src="vendors/jquery.js"></script>
+  <script src="scripts/client.js"></script>
+</head>
+
+<body>
+  <header class="container" id="header">
+    <h1 class="jumbotron text-center">Salary Calculator</h1>
+  </header>
+  <div class="container" id="inputDiv">
+    <h3>Add Employee</h3>
+    <input type="text" placeholder="First Name" id="firstNameIn">
+    <input type="text" placeholder="Last Name" id="lastNameIn">
+    <input type="number" placeholder="ID" id="employeeIdIn">
+    <input type="text" placeholder="Title" id="titleIn">
+    <input type="number" placeholder="Salary" id="annualSalaryIn">
+    <button id="addEmployeeButton" class="btn btn-outline-success" type="submit">Add Employee</button>
+  </div>
+  <br>
+  <div class="container" id="outputDiv">
+    <table class="table table-hover table-dark">
+      <thead>
+        <tr>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">ID#</th>
+          <th scope="col">Title</th>
+          <th scope="col">Salary</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
     </table>
-    <h2>Monthly Salary</h2>
-    <p id="monthlySalary">0</p>
+  </div>
+  <br>
+  <div class="container" id="budgetDiv">
+  </div>
 </body>
+
 </html>
