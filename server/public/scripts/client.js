@@ -55,7 +55,7 @@ function updateTable() {
                 <td>${employee.annualSalary}</td>
                 <td><button class="deleteEmployee" id="${employee.employeeId}">Delete</button></td>
             </tr>
-        `);        
+        `);
     }
     for (let i = 0; i < employeeArray.length; i++) {
         const employee = employeeArray[i];
